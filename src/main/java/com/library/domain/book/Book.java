@@ -1,7 +1,7 @@
 package com.library.domain.book;
 
-import com.library.domain.common.validation.isbn.IsbnFormat;
-import com.library.domain.common.validation.isbn.IsbnUniqueness;
+import com.library.common.validation.isbn.IsbnFormat;
+import com.library.common.validation.isbn.IsbnUniqueness;
 import jakarta.validation.constraints.*;
 
 public record Book(

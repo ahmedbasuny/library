@@ -23,6 +23,13 @@ services:
         limits:
           memory: 500m
 
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    environment:
+      REDIS_PASSWORD: redis
+
   pgadmin:
     container_name: pgadmin
     image: dpage/pgadmin4:8.12.0

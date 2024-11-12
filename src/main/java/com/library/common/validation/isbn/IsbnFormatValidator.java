@@ -1,4 +1,4 @@
-package com.library.domain.common.validation.isbn;
+package com.library.common.validation.isbn;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

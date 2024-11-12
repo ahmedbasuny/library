@@ -1,6 +1,6 @@
 package com.library.domain.patron;
 
-import com.library.domain.common.enums.PatronStatus;
+import com.library.common.enums.PatronStatus;
 import org.springframework.stereotype.Component;
 
 @Component

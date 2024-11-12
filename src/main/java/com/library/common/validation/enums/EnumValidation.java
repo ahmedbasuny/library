@@ -1,4 +1,4 @@
-package com.library.domain.common.validation.enums;
+package com.library.common.validation.enums;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

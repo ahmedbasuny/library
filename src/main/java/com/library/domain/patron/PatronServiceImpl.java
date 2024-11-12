@@ -1,13 +1,15 @@
 package com.library.domain.patron;
 
-import com.library.domain.common.enums.PatronStatus;
-import jakarta.transaction.Transactional;
+import com.library.common.enums.PatronStatus;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,18 +20,22 @@ class PatronServiceImpl implements PatronService {
     private final PatronRepository patronRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public Page<Patron> getPatronsWithPagination(int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         return patronRepository.findAll(pageable).map(PatronMapper::patronEntityToPatron);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Patron> getPatrons() {
         return patronRepository.findAll().stream().map(
                 PatronMapper::patronEntityToPatron).toList();
     }
 
     @Override
+    @Cacheable(value = "patrons", key = "#id")
+    @Transactional(readOnly = true)
     public Patron getPatron(Long id) {
         PatronEntity patronEntity = getPatronEntityById(id);
         return PatronMapper.patronEntityToPatron(patronEntity);
@@ -44,7 +50,7 @@ class PatronServiceImpl implements PatronService {
 
     @Override
     @Transactional
-    @Modifying
+    @CachePut(value = "patrons", key = "#id")
     public Patron updatePatron(Long id, Patron patron) {
         PatronEntity patronEntity = getPatronEntityById(id);
         patronEntity.setName(patron.name());
@@ -60,13 +66,14 @@ class PatronServiceImpl implements PatronService {
 
     @Override
     @Transactional
-    @Modifying
+    @CacheEvict(value = "patrons", key = "#id")
     public void deletePatron(Long id) {
         PatronEntity patronEntity = getPatronEntityById(id);
         patronRepository.delete(patronEntity);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public PatronEntity checkPatronIsAllowedToBorrow(Long patronId) {
         PatronEntity patronEntity = getPatronEntityById(patronId);
         if (PatronStatus.ACTIVE.name().equalsIgnoreCase(patronEntity.getStatus())) {

@@ -4,9 +4,10 @@ import com.library.domain.book.BookEntity;
 import com.library.domain.book.BookService;
 import com.library.domain.patron.PatronEntity;
 import com.library.domain.patron.PatronService;
-import jakarta.transaction.Transactional;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
@@ -42,6 +43,7 @@ class BorrowingServiceImpl implements BorrowingService {
     }
 
     @Override
+    @Transactional
     public BorrowingRecord returnBook(Long bookId, Long patronId) {
         BorrowingRecordEntity borrowingRecordEntity = borrowingRepository
                 .findByBookIdAndPatronId(bookId, patronId).orElseThrow(

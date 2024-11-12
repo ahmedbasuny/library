@@ -1,7 +1,7 @@
 package com.library.domain.patron;
 
-import com.library.domain.common.enums.PatronStatus;
-import com.library.domain.common.validation.enums.EnumValidation;
+import com.library.common.enums.PatronStatus;
+import com.library.common.validation.enums.EnumValidation;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;

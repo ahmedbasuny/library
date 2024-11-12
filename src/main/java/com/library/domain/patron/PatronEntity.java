@@ -1,12 +1,8 @@
 package com.library.domain.patron;
 
 import com.library.domain.borrowing.BorrowingRecordEntity;
-import com.library.domain.common.enums.PatronStatus;
+import com.library.common.enums.PatronStatus;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.PastOrPresent;
-import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
