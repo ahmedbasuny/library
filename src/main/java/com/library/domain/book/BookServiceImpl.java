@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,8 +23,9 @@ class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Optional<Book> getBook(Long id) {
-        return bookRepository.findById(id).map(BookMapper::bookEntityToBook);
+    public Book getBook(Long id) {
+        BookEntity bookEntity = getBookEntityById(id);
+        return BookMapper.bookEntityToBook(bookEntity);
     }
 
     @Override
@@ -60,6 +61,34 @@ class BookServiceImpl implements BookService {
     public void deleteBook(Long id) {
         BookEntity bookEntity = getBookEntityById(id);
         bookRepository.delete(bookEntity);
+    }
+
+    @Override
+    public List<Book> getBooks() {
+        return bookRepository.findAll().stream().map(
+                BookMapper::bookEntityToBook).toList();
+    }
+
+    @Override
+    public BookEntity checkBookAvailabilityForBorrowing(Long bookId) {
+        BookEntity bookEntity = getBookEntityById(bookId);
+        if (bookEntity.getCopiesAvailable() > 0) {
+            return bookEntity;
+        } else {
+            throw BookNotAvailableForBorrowingException.forId(bookId);
+        }
+    }
+
+    @Override
+    public void saveBook(BookEntity bookEntity) {
+        bookRepository.save(bookEntity);
+    }
+
+    @Override
+    public void returnBook(Long bookId) {
+        BookEntity bookEntity = getBookEntityById(bookId);
+        bookEntity.setCopiesAvailable(bookEntity.getCopiesAvailable() + 1);
+        bookRepository.save(bookEntity);
     }
 
     private BookEntity getBookEntityById(Long id) {

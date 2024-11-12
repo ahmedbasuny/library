@@ -3,7 +3,7 @@ package com.library.domain.book;
 import org.springframework.stereotype.Component;
 
 @Component
-class BookMapper {
+public class BookMapper {
 
     public static Book bookEntityToBook(BookEntity bookEntity) {
         return new Book(

@@ -1,7 +1,6 @@
 package com.library.web.controllers;
 
 import com.library.domain.book.Book;
-import com.library.domain.book.BookNotFoundException;
 import com.library.domain.book.BookService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/books")
@@ -17,7 +18,13 @@ public class BookController {
 
     private final BookService bookService;
 
+
     @GetMapping
+    ResponseEntity<List<Book>> getBooks() {
+        return ResponseEntity.ok(bookService.getBooks());
+    }
+
+    @GetMapping("/pagination")
     ResponseEntity<Page<Book>> getBooksWithPagination(
             @RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
             @RequestParam(name = "pageSize", defaultValue = "10") int pageSize) {
@@ -31,9 +38,7 @@ public class BookController {
 
     @GetMapping("/{id}")
     ResponseEntity<Book> getBook(@PathVariable Long id) {
-        return bookService.getBook(id)
-                .map(ResponseEntity::ok)
-                .orElseThrow(() -> BookNotFoundException.forId(id));
+        return ResponseEntity.ok(bookService.getBook(id));
     }
 
     @PutMapping("/{id}")

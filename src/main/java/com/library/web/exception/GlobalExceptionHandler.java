@@ -1,6 +1,7 @@
 package com.library.web.exception;
 
 import com.library.domain.book.BookNotFoundException;
+import com.library.domain.patron.PatronNotFoundException;
 import org.springframework.http.*;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -32,6 +33,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
                 HttpStatus.NOT_FOUND, exception.getMessage());
         problemDetail.setTitle("Book Not Found");
+        problemDetail.setProperty(TIMESTAMP_KEY, Instant.now());
+        return problemDetail;
+    }
+
+    @ExceptionHandler(PatronNotFoundException.class)
+    ProblemDetail handle(PatronNotFoundException exception) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatus.NOT_FOUND, exception.getMessage());
+        problemDetail.setTitle("Patron Not Found");
         problemDetail.setProperty(TIMESTAMP_KEY, Instant.now());
         return problemDetail;
     }

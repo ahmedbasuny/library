@@ -1,6 +1,7 @@
 package com.library.domain.patron;
 
 import com.library.domain.borrowing.BorrowingRecordEntity;
+import com.library.domain.common.enums.PatronStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -26,26 +27,12 @@ public class PatronEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "patron_seq_gen")
     @SequenceGenerator(name = "patron_seq_gen", sequenceName = "patron_id_seq", allocationSize = 1)
     private Long id;
-
-    @Column(nullable = false)
-    @NotEmpty(message = "Name is required.")
     private String name;
-
-    @Pattern(regexp = "^\\+?[0-9. ()-]{7,25}$", message = "Invalid mobile number.")
     private String mobile;
-
-    @Email(message = "Invalid email format.")
     private String email;
-
     private String address;
-
-    @Column(nullable = false)
-    @PastOrPresent(message = "Membership date cannot be in the future.")
     private LocalDate membershipDate = LocalDate.now();
-
-    @Column(nullable = false)
-    @NotEmpty(message = "Status is required.")
-    private String status = "active";
+    private String status = PatronStatus.ACTIVE.name();
 
     @OneToMany(mappedBy = "patron", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<BorrowingRecordEntity> borrowingRecords;
