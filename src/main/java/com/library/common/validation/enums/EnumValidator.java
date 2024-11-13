@@ -6,7 +6,7 @@ import jakarta.validation.ConstraintValidatorContext;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public class EnumValidator implements ConstraintValidator<EnumValidation, String> {
+public class EnumValidator implements ConstraintValidator<EnumValidation, Enum<?>> {
 
     private Enum<?>[] enumValues;
     private String enumValuesList;
@@ -20,20 +20,20 @@ public class EnumValidator implements ConstraintValidator<EnumValidation, String
     }
 
     @Override
-    public boolean isValid(String value, ConstraintValidatorContext context) {
-
+    public boolean isValid(Enum<?> value, ConstraintValidatorContext context) {
         boolean isValid = false;
 
-        isValid = Arrays.stream(enumValues)
-                .anyMatch(e -> e.name().equals(value));
+        isValid = Arrays.asList(enumValues).contains(value);
 
         if (!isValid) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(
-                    "Invalid value. This field must match one of the following values: [" + enumValuesList + "]"
+                    "Invalid value. This field must match one of the following values: ["
+                            + enumValuesList + "]"
             ).addConstraintViolation();
         }
 
         return isValid;
     }
 }
+

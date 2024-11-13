@@ -1,13 +1,15 @@
-package com.library.domain.patron;
+package com.library.domain.patron.models;
 
 import com.library.common.enums.PatronStatus;
 import com.library.common.validation.enums.EnumValidation;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Pattern;
 
 import java.time.LocalDate;
 
-public record Patron(
-        Long id,
+public record CreatePatronDto(
         @NotEmpty(message = "Name is required.")
         String name,
         @NotEmpty(message = "Mobile is required.")

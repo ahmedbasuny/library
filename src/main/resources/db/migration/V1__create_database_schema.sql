@@ -20,7 +20,7 @@ CREATE TABLE patron (
     email VARCHAR(255),
     address VARCHAR(255),
     membership_date DATE,
-    status VARCHAR(20) DEFAULT 'active'
+    status VARCHAR(20) DEFAULT 'ACTIVE'
 );
 
 CREATE TABLE borrowing_record (

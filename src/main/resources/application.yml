@@ -27,4 +27,8 @@ spring:
       password: redis
       timeout: 5000
 
+logging:
+  level:
+    org.springframework.cache: TRACE
+
 

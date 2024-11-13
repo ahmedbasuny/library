@@ -1,6 +1,10 @@
 package com.library.domain.patron;
 
 import com.library.common.enums.PatronStatus;
+import com.library.domain.patron.models.CreatePatronDto;
+import com.library.domain.patron.models.Patron;
+import com.library.domain.patron.models.UpdatePatronDto;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -11,7 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -27,13 +30,6 @@ class PatronServiceImpl implements PatronService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<Patron> getPatrons() {
-        return patronRepository.findAll().stream().map(
-                PatronMapper::patronEntityToPatron).toList();
-    }
-
-    @Override
     @Cacheable(value = "patrons", key = "#id")
     @Transactional(readOnly = true)
     public Patron getPatron(Long id) {
@@ -43,22 +39,23 @@ class PatronServiceImpl implements PatronService {
 
     @Override
     @Transactional
-    public Patron addPatron(Patron patron) {
-        PatronEntity patronEntity = patronRepository.save(PatronMapper.patronToPatronEntity(patron));
+    public Patron addPatron(@Valid CreatePatronDto createPatronDto) {
+        PatronEntity patronEntity = patronRepository.save(
+                PatronMapper.createPatronDtoToPatronEntity(createPatronDto));
         return PatronMapper.patronEntityToPatron(patronEntity);
     }
 
     @Override
     @Transactional
     @CachePut(value = "patrons", key = "#id")
-    public Patron updatePatron(Long id, Patron patron) {
+    public Patron updatePatron(Long id, @Valid UpdatePatronDto updatePatronDto) {
         PatronEntity patronEntity = getPatronEntityById(id);
-        patronEntity.setName(patron.name());
-        patronEntity.setMobile(patron.mobile());
-        patronEntity.setEmail(patron.email());
-        patronEntity.setAddress(patron.address());
-        patronEntity.setMembershipDate(patron.membershipDate());
-        patronEntity.setStatus(patron.status().name());
+        patronEntity.setName(updatePatronDto.name());
+        patronEntity.setMobile(updatePatronDto.mobile());
+        patronEntity.setEmail(updatePatronDto.email());
+        patronEntity.setAddress(updatePatronDto.address());
+        patronEntity.setMembershipDate(updatePatronDto.membershipDate());
+        patronEntity.setStatus(updatePatronDto.status().name());
 
         PatronEntity updatePatronEntity = patronRepository.save(patronEntity);
         return PatronMapper.patronEntityToPatron(updatePatronEntity);

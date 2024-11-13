@@ -1,6 +1,8 @@
 package com.library.domain.patron;
 
 import com.library.common.enums.PatronStatus;
+import com.library.domain.patron.models.CreatePatronDto;
+import com.library.domain.patron.models.Patron;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -26,6 +28,17 @@ public class PatronMapper {
                 .address(patron.address())
                 .membershipDate(patron.membershipDate())
                 .status(patron.status().name())
+                .build();
+    }
+
+    public static PatronEntity createPatronDtoToPatronEntity(CreatePatronDto createPatronDto) {
+        return PatronEntity.builder()
+                .name(createPatronDto.name())
+                .mobile(createPatronDto.mobile())
+                .email(createPatronDto.email())
+                .address(createPatronDto.address())
+                .membershipDate(createPatronDto.membershipDate())
+                .status(createPatronDto.status().name())
                 .build();
     }
 }

@@ -1,40 +1,39 @@
-//package com.library.common.config;
-//
-//import org.springframework.beans.factory.annotation.Value;
-//import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCustomizer;
-//import org.springframework.cache.CacheManager;
-//import org.springframework.cache.annotation.EnableCaching;
-//import org.springframework.context.annotation.Bean;
-//import org.springframework.context.annotation.Configuration;
-//import org.springframework.data.redis.cache.RedisCacheConfiguration;
-//import org.springframework.data.redis.cache.RedisCacheManager;
-//import org.springframework.data.redis.connection.RedisConnectionFactory;
-//import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
-//import org.springframework.data.redis.serializer.RedisSerializationContext;
-//
-//import java.time.Duration;
-//
-//@EnableCaching
-//@Configuration
-//public class RedisConfig {
-//
-//    @Value("${cache.redis.config.ttl:60}")
-//    private int ttl;
-//
-//    @Bean
-//    public RedisCacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
-//        RedisCacheConfiguration cacheConfig = RedisCacheConfiguration
-//                .defaultCacheConfig()
-//                .entryTtl(Duration.ofMinutes(ttl))
-//                .disableCachingNullValues()
-//                .serializeValuesWith(
-//                        RedisSerializationContext.SerializationPair
-//                                .fromSerializer(new GenericJackson2JsonRedisSerializer())
-//                );
-//
-//        return RedisCacheManager.builder(redisConnectionFactory)
-//                .cacheDefaults(cacheConfig)
-//                .transactionAware()
-//                .build();
-//    }
-//}
+package com.library.common.config;
+
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializationContext;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+
+@EnableCaching
+@Configuration
+public class RedisConfig {
+
+    @Bean
+    public RedisCacheConfiguration cacheConfiguration() {
+        return RedisCacheConfiguration
+                .defaultCacheConfig()
+                .disableCachingNullValues()
+                .serializeKeysWith(RedisSerializationContext.SerializationPair
+                        .fromSerializer(new StringRedisSerializer()))
+                .serializeValuesWith(RedisSerializationContext.SerializationPair
+                        .fromSerializer(new GenericJackson2JsonRedisSerializer()));
+    }
+
+
+    @Bean
+    public Jackson2ObjectMapperBuilder jacksonObjectMapperBuilder() {
+        return Jackson2ObjectMapperBuilder.json()
+                .modules(new JavaTimeModule())
+                .serializers(LocalDateSerializer.INSTANCE)
+                .deserializers(LocalDateDeserializer.INSTANCE);
+    }
+
+}

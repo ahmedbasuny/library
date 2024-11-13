@@ -1,9 +1,11 @@
 package com.library.domain.book;
 
+import com.library.domain.book.models.Book;
+import com.library.domain.book.models.CreateBookDto;
+import com.library.domain.book.models.UpdateBookDto;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public interface BookService {
@@ -11,15 +13,13 @@ public interface BookService {
 
     Book getBook(Long id);
 
-    Book addBook(Book book);
+    Book addBook(@Valid CreateBookDto createBookDto);
 
     boolean existsByIsbn(String isbn);
 
-    Book updateBook(Long id, Book book);
+    Book updateBook(Long id, @Valid UpdateBookDto updateBookDto);
 
     void deleteBook(Long id);
-
-    List<Book> getBooks();
 
     BookEntity checkBookAvailabilityForBorrowing(Long bookId);
 

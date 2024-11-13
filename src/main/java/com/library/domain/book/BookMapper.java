@@ -1,5 +1,7 @@
 package com.library.domain.book;
 
+import com.library.domain.book.models.Book;
+import com.library.domain.book.models.CreateBookDto;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -25,6 +27,17 @@ public class BookMapper {
                 .isbn(book.isbn())
                 .genre(book.genre())
                 .copiesAvailable(book.copiesAvailable())
+                .build();
+    }
+
+    public static BookEntity createBookDtoToBookEntity(CreateBookDto createBookDto) {
+        return BookEntity.builder()
+                .title(createBookDto.title())
+                .author(createBookDto.author())
+                .publicationYear(createBookDto.publicationYear())
+                .isbn(createBookDto.isbn())
+                .genre(createBookDto.genre())
+                .copiesAvailable(createBookDto.copiesAvailable())
                 .build();
     }
 }

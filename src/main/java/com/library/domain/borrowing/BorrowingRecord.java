@@ -1,7 +1,7 @@
 package com.library.domain.borrowing;
 
-import com.library.domain.book.Book;
-import com.library.domain.patron.Patron;
+import com.library.domain.book.models.Book;
+import com.library.domain.patron.models.Patron;
 
 import java.time.LocalDate;
 

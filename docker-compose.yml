@@ -25,10 +25,12 @@ services:
 
   redis:
     image: redis:7-alpine
-    ports:
-      - "6379:6379"
+    container_name: redis
     environment:
       REDIS_PASSWORD: redis
+    ports:
+      - "6379:6379"
+
 
   pgadmin:
     container_name: pgadmin

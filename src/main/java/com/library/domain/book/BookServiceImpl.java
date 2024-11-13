@@ -1,5 +1,12 @@
 package com.library.domain.book;
 
+import com.library.domain.book.exceptions.BookNotAvailableForBorrowingException;
+import com.library.domain.book.exceptions.BookNotFoundException;
+import com.library.domain.book.exceptions.DuplicateIsbnException;
+import com.library.domain.book.models.Book;
+import com.library.domain.book.models.CreateBookDto;
+import com.library.domain.book.models.UpdateBookDto;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -9,8 +16,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -35,8 +40,9 @@ class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public Book addBook(Book book) {
-        BookEntity bookEntity = bookRepository.save(BookMapper.bookToBookEntity(book));
+    public Book addBook(@Valid CreateBookDto createBookDto) {
+        BookEntity bookEntity = bookRepository.save(
+                BookMapper.createBookDtoToBookEntity(createBookDto));
         return BookMapper.bookEntityToBook(bookEntity);
     }
 
@@ -49,16 +55,30 @@ class BookServiceImpl implements BookService {
     @Override
     @Transactional
     @CachePut(value = "books", key = "#id")
-    public Book updateBook(Long id, Book book) {
+    public Book updateBook(Long id, @Valid UpdateBookDto updateBookDto) {
+
         BookEntity bookEntity = getBookEntityById(id);
-        bookEntity.setTitle(book.title());
-        bookEntity.setAuthor(book.author());
-        bookEntity.setPublicationYear(book.publicationYear());
-        bookEntity.setIsbn(book.isbn());
-        bookEntity.setGenre(book.genre());
-        bookEntity.setCopiesAvailable(book.copiesAvailable());
+
+        checkDuplicatedIsbn(id, updateBookDto, bookEntity);
+
+        bookEntity.setTitle(updateBookDto.title());
+        bookEntity.setAuthor(updateBookDto.author());
+        bookEntity.setPublicationYear(updateBookDto.publicationYear());
+        bookEntity.setIsbn(updateBookDto.isbn());
+        bookEntity.setGenre(updateBookDto.genre());
+        bookEntity.setCopiesAvailable(updateBookDto.copiesAvailable());
         BookEntity updateBookEntity = bookRepository.save(bookEntity);
         return BookMapper.bookEntityToBook(updateBookEntity);
+    }
+
+    private void checkDuplicatedIsbn(Long id, UpdateBookDto updateBookDto, BookEntity bookEntity) {
+        if (updateBookDto.isbn() != null
+                && !updateBookDto.isbn().equals(bookEntity.getIsbn())
+                && bookRepository.existsByIsbnAndIdNot(updateBookDto.isbn(), id)) {
+            throw new DuplicateIsbnException("The provided ISBN: " +
+                    updateBookDto.isbn() + " already exists for another book.");
+        }
+
     }
 
     @Override
@@ -67,13 +87,6 @@ class BookServiceImpl implements BookService {
     public void deleteBook(Long id) {
         BookEntity bookEntity = getBookEntityById(id);
         bookRepository.delete(bookEntity);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<Book> getBooks() {
-        return bookRepository.findAll().stream().map(
-                BookMapper::bookEntityToBook).toList();
     }
 
     @Override

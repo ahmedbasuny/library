@@ -12,13 +12,13 @@ VALUES
     ('Frankenstein', 'Mary Shelley', 1818, '9780141439471', 'Horror', 3),
     ('The Iliad', 'Homer', 1989, '9780140275360', 'Epic', 2);
 
-INSERT INTO patron (name, mobile, email, address, membership_date)
+INSERT INTO patron (name, mobile, email, address, membership_date, status)
 VALUES 
-    ('Ahmed Basuny', '01276063525', 'ahmedbasuny13@gmail.com', 'Alex', '2024-01-15'),
-    ('Ali Ebrahim', '0987654321', 'ali.ebrahim@example.com', 'Cairo', '2024-02-10'),
-    ('Mohamed Mostafa', '1122334455', 'moahmed.mostafa@example.com', 'Alexandria', '2024-03-05'),
-    ('Ismail Ahmed', '5566778899', 'ismail.ahmed@example.com', 'Ismailia', '2024-04-20'),
-    ('Mona Tawfeek', '6677889900', 'mona.tawfeek@example.com', 'New Cairo', '2024-05-15');
+    ('Ahmed Basuny', '01276063525', 'ahmedbasuny13@gmail.com', 'Alex', '2024-01-15', 'ACTIVE'),
+    ('Ali Ebrahim', '0987654321', 'ali.ebrahim@example.com', 'Cairo', '2024-02-10', 'ACTIVE'),
+    ('Mohamed Mostafa', '1122334455', 'moahmed.mostafa@example.com', 'Alexandria', '2024-03-05', 'ACTIVE'),
+    ('Ismail Ahmed', '5566778899', 'ismail.ahmed@example.com', 'Ismailia', '2024-04-20', 'ACTIVE'),
+    ('Mona Tawfeek', '6677889900', 'mona.tawfeek@example.com', 'New Cairo', '2024-05-15', 'INACTIVE');
 
 INSERT INTO borrowing_record (book_id, patron_id, borrow_date, due_date)
 VALUES 

@@ -1,7 +1,9 @@
 package com.library.web.controllers;
 
-import com.library.domain.book.Book;
+import com.library.domain.book.models.Book;
 import com.library.domain.book.BookService;
+import com.library.domain.book.models.CreateBookDto;
+import com.library.domain.book.models.UpdateBookDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -9,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -18,13 +19,7 @@ public class BookController {
 
     private final BookService bookService;
 
-
     @GetMapping
-    ResponseEntity<List<Book>> getBooks() {
-        return ResponseEntity.ok(bookService.getBooks());
-    }
-
-    @GetMapping("/pagination")
     ResponseEntity<Page<Book>> getBooksWithPagination(
             @RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
             @RequestParam(name = "pageSize", defaultValue = "10") int pageSize) {
@@ -32,8 +27,8 @@ public class BookController {
     }
 
     @PostMapping
-    ResponseEntity<Book> addBook(@Valid @RequestBody Book book) {
-        return new ResponseEntity<>(bookService.addBook(book), HttpStatus.CREATED);
+    ResponseEntity<Book> addBook(@Valid @RequestBody CreateBookDto createBookDto) {
+        return new ResponseEntity<>(bookService.addBook(createBookDto), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
@@ -42,8 +37,9 @@ public class BookController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Book> updateBook(@PathVariable Long id, @Valid @RequestBody Book book) {
-        return new ResponseEntity<>(bookService.updateBook(id, book), HttpStatus.CREATED);
+    ResponseEntity<Book> updateBook(@PathVariable Long id,
+                                    @Valid @RequestBody UpdateBookDto updateBookDto) {
+        return new ResponseEntity<>(bookService.updateBook(id, updateBookDto), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
