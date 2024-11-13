@@ -1,4 +1,4 @@
-package com.library.domain.borrowing;
+package com.library.domain.borrowing.exception;
 
 public class BorrowingRecordNotFoundException extends RuntimeException {
 

@@ -1,4 +1,4 @@
-package com.library.common.config;
+package com.library.common.configuration;
 
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;

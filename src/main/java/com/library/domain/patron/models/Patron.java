@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.library.common.enums.PatronStatus;
-import com.library.common.validation.enums.EnumValidation;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
@@ -32,7 +31,6 @@ public record Patron(
         @JsonSerialize(using = LocalDateSerializer.class)
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
         LocalDate membershipDate,
-        @EnumValidation(PatronStatus.class)
         PatronStatus status
 ) {
 }

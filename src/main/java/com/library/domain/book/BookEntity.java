@@ -1,12 +1,10 @@
 package com.library.domain.book;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.library.domain.borrowing.BorrowingRecordEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -16,6 +14,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "book")
+@ToString(exclude = {"borrowingRecords"})
 public class BookEntity {
 
     @Id
@@ -30,5 +29,6 @@ public class BookEntity {
     private Integer copiesAvailable;
 
     @OneToMany(mappedBy = "book", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JsonManagedReference
     private List<BorrowingRecordEntity> borrowingRecords;
 }

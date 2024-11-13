@@ -29,6 +29,7 @@
 	<properties>
 		<java.version>23</java.version>
 		<spring-doc.version>2.6.0</spring-doc.version>
+		<jwt.verion>0.11.5</jwt.verion>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -86,6 +87,12 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>com.redis.testcontainers</groupId>
+			<artifactId>testcontainers-redis-junit</artifactId>
+			<version>1.4.6</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 			<version>${spring-doc.version}</version>
@@ -107,11 +114,30 @@
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-jsr310</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>${jwt.verion}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>${jwt.verion}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>${jwt.verion}</version>
+		</dependency>
 
 	</dependencies>
 
 	<build>
+		<finalName>library</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

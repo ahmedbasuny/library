@@ -2,6 +2,19 @@ name: 'library'
 
 services:
 
+  #  app:
+  #    build:
+  #      context: .
+  #    environment:
+  #      - DB_HOST=db
+  #      - DB_PORT=3306
+  #      - DB_USERNAME=root
+  #      - DB_PASSWORD=password
+  #    ports:
+  #      - "8080:8080"
+  #    depends_on:
+  #      - db
+  #
   library-db:
     image: postgres:16-alpine
     container_name: library-db
@@ -26,8 +39,6 @@ services:
   redis:
     image: redis:7-alpine
     container_name: redis
-    environment:
-      REDIS_PASSWORD: redis
     ports:
       - "6379:6379"
 

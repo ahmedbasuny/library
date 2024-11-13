@@ -1,6 +1,8 @@
 package com.library.domain.patron;
 
 import com.library.common.enums.PatronStatus;
+import com.library.domain.patron.exception.PatronNotAllowedToBorrowBooksException;
+import com.library.domain.patron.exception.PatronNotFoundException;
 import com.library.domain.patron.models.CreatePatronDto;
 import com.library.domain.patron.models.Patron;
 import com.library.domain.patron.models.UpdatePatronDto;

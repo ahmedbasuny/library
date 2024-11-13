@@ -21,14 +21,19 @@ spring:
 
   data:
     redis:
-      host: localhost
-      port: 6379
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
       database: 1
-      password: redis
       timeout: 5000
 
 logging:
   level:
     org.springframework.cache: TRACE
+
+application:
+  security:
+    jwt:
+      secret-key: ${JWT_SECRET_KEY:a00472b2335efa1d4f5e381f3d262e2f9648cf62ee8f0e689842bb2ef0d6d2ab}
+      expiration: ${JWT_KEY_EXPIRATION:3600000}
 
 

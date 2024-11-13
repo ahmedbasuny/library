@@ -1,12 +1,10 @@
 package com.library.domain.patron;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.library.domain.borrowing.BorrowingRecordEntity;
 import com.library.common.enums.PatronStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,6 +15,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "patron")
+@ToString(exclude = {"borrowingRecords"})
 public class PatronEntity {
 
     @Id
@@ -31,5 +30,6 @@ public class PatronEntity {
     private String status = PatronStatus.ACTIVE.name();
 
     @OneToMany(mappedBy = "patron", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JsonManagedReference
     private List<BorrowingRecordEntity> borrowingRecords;
 }

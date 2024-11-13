@@ -1,4 +1,4 @@
-package com.library.domain.patron;
+package com.library.domain.patron.exception;
 
 public class PatronNotFoundException extends RuntimeException {
 
