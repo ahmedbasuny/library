@@ -15,7 +15,7 @@ public class BorrowingController {
     private final BorrowingService borrowingService;
 
     @PostMapping("/{bookId}/patron/{patronId}")
-    public ResponseEntity<?> borrowBook(
+    public ResponseEntity<BorrowingRecord> borrowBook(
             @PathVariable Long bookId,
             @PathVariable Long patronId
     ) {

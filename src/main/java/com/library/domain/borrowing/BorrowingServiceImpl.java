@@ -26,7 +26,7 @@ class BorrowingServiceImpl implements BorrowingService {
 
     @Override
     @Transactional
-    public Object borrowBook(Long bookId, Long patronId) {
+    public BorrowingRecord borrowBook(Long bookId, Long patronId) {
         BookEntity bookEntity = bookService.checkBookAvailabilityForBorrowing(bookId);
         PatronEntity patronEntity = patronService.checkPatronIsAllowedToBorrow(patronId);
         checkPatronAlreadyBorrowedBook(bookId, patronId);

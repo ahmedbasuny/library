@@ -17,10 +17,13 @@ class TestcontainersConfiguration {
                 DockerImageName.parse("postgres:16-alpine"));
     }
 
-    @Bean
-    @ServiceConnection(name = "redis")
-    RedisContainer redisContainer() {
-        return new RedisContainer(DockerImageName.parse("redis:7-alpine"))
+    static {
+        GenericContainer<?> redis = new GenericContainer<>(
+                DockerImageName.parse("redis:7-alpine"))
                 .withExposedPorts(6379);
+
+        redis.start();
+        System.setProperty("spring.data.redis.host", redis.getHost());
+        System.setProperty("spring.data.redis.port", redis.getMappedPort(6379).toString());
     }
 }
