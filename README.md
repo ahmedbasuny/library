@@ -71,7 +71,7 @@ The Library Management System API uses JWT-based authentication to secure endpoi
    - **Request Body**:
      ```json
      {
-       "email": "tesuser@test.com",
+       "email": "testuser@test.com",
        "password": "P@ssw0rd123",
        "firstName": "test",
        "lastName": "user"
@@ -84,7 +84,7 @@ The Library Management System API uses JWT-based authentication to secure endpoi
    - **Request Body**:
      ```json
      {
-       "email": "tesuser@test.com",
+       "email": "testuser@test.com",
        "password": "P@ssw0rd123"
      }
      ```
