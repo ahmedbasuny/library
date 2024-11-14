@@ -15,8 +15,7 @@ interface BorrowingRepository extends JpaRepository<BorrowingRecordEntity, Long>
             WHERE b.book.id = :bookId
             AND b.patron.id = :patronId
             AND b.returnDate IS NULL
-            """
-    )
+            """)
     List<BorrowingRecordEntity> findActiveBorrowingRecord(
             @Param("bookId") Long bookId,
             @Param("patronId") Long patronId

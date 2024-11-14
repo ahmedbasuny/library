@@ -1,6 +1,5 @@
 package com.library.domain.borrowing;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.library.domain.book.BookEntity;
 import com.library.domain.patron.PatronEntity;
 import jakarta.persistence.*;
@@ -27,13 +26,11 @@ public class BorrowingRecordEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "book_id", nullable = false)
     @NotNull(message = "Book is required.")
-//    @JsonBackReference
     private BookEntity book;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "patron_id", nullable = false)
     @NotNull(message = "Patron is required.")
-//    @JsonBackReference
     private PatronEntity patron;
 
     @Column(nullable = false)

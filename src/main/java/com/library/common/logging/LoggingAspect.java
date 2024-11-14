@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -33,33 +35,42 @@ public class LoggingAspect {
     @Around("bookServiceMethods() || patronServiceMethods() || borrowingServiceMethods()")
     public Object logAndMeasurePerformance(ProceedingJoinPoint joinPoint) throws Throwable {
 
+        String user = getLoggedInUser();
+
         long startTime = System.currentTimeMillis();
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         String methodName = signature.getDeclaringType().getSimpleName() + "." + signature.getName();
         String arguments = Arrays.stream(joinPoint.getArgs()).map(
                 Object::toString).collect(Collectors.joining(", "));
 
-        log.info("Starting method: {} with arguments: [{}]", methodName, arguments);
+        log.info("User: [{}] - Starting method: {} with arguments: [{}]", user, methodName, arguments);
 
         try {
             Object result = joinPoint.proceed();
             long elapsedTime = System.currentTimeMillis() - startTime;
-            log.info("Method: {} executed in {} ms with result: {}", methodName, elapsedTime, result);
+            log.info("User: [{}] - Method: {} executed in {} ms with result: {}", user, methodName, elapsedTime, result);
             return result;
         } catch (Exception e) {
             long elapsedTime = System.currentTimeMillis() - startTime;
-            log.error("Exception in method: {} after: {} ms {}", methodName, elapsedTime, e.getMessage());
+            log.error("User: [{}] Exception in method: {} after: {} ms {}", user, methodName, elapsedTime, e.getMessage());
             throw e;
         }
     }
 
     @AfterReturning(pointcut = "applicationServiceMethods()", returning = "result")
     public void logAfterReturning(Object result) {
-        log.info("Method completed successfully with result: {}", result);
+        String user = getLoggedInUser();
+        log.info("User: [{}] - Method completed successfully with result: {}", user, result);
     }
 
     @AfterThrowing(pointcut = "applicationServiceMethods()", throwing = "ex")
     public void logException(Exception ex) {
-        log.error("Exception thrown: {} ", ex.getMessage(), ex);
+        String user = getLoggedInUser();
+        log.error("User: [{}] - Exception thrown: {} ", user, ex.getMessage(), ex);
+    }
+
+    private String getLoggedInUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication != null ? authentication.getName() : "Anonymous";
     }
 }

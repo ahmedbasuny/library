@@ -31,6 +31,4 @@ public class AuthenticationController {
         return new ResponseEntity<>(
                 authenticationService.getAccessToken(accessTokenRequestDto), HttpStatus.CREATED);
     }
-
-
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface AuthenticationService {
+
     User registerUser(@Valid RegisterUserDto registerUserDto);
 
     AccessTokenResponseDto getAccessToken(@Valid AccessTokenRequestDto accessTokenRequestDto);

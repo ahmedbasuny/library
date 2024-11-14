@@ -1,6 +1,5 @@
 package com.library.common.security;
 
-import com.library.common.authentication.CustomAuthenticationException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

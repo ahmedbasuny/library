@@ -87,12 +87,6 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.redis.testcontainers</groupId>
-			<artifactId>testcontainers-redis-junit</artifactId>
-			<version>1.4.6</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 			<version>${spring-doc.version}</version>
@@ -149,6 +143,21 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${java.version}</source>
+					<source>${java.version}</source>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${lombok.version}</version>
+						</path>
+					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
 		</plugins>

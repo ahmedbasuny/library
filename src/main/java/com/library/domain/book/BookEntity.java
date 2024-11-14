@@ -1,9 +1,7 @@
 package com.library.domain.book;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.library.domain.borrowing.BorrowingRecordEntity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.util.List;
@@ -29,6 +27,5 @@ public class BookEntity {
     private Integer copiesAvailable;
 
     @OneToMany(mappedBy = "book", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JsonManagedReference
     private List<BorrowingRecordEntity> borrowingRecords;
 }

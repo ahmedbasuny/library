@@ -49,10 +49,10 @@ public class SecurityConfiguration {
                                 .anyRequest()
                                 .authenticated()
                 )
-                .exceptionHandling(exceptionHandlingConfigurer ->
-                        exceptionHandlingConfigurer.authenticationEntryPoint(customAuthenticationEntryPoint))
-                .sessionManagement(session
-                        -> session.sessionCreationPolicy(STATELESS))
+                .exceptionHandling(
+                        exceptionHandlingConfigurer -> exceptionHandlingConfigurer
+                                .authenticationEntryPoint(customAuthenticationEntryPoint))
+                .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

@@ -25,7 +25,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User registerUser(RegisterUserDto registerUserDto) {
-        UserEntity userEntity = userRepository.save(userMapper.registerUserDtoToUserEntity(registerUserDto));
+        UserEntity userEntity = userRepository.save(
+                userMapper.registerUserDtoToUserEntity(registerUserDto));
         return userMapper.userEntityToUSer(userEntity);
     }
 
@@ -35,8 +36,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 accessTokenRequestDto.email(), accessTokenRequestDto.password()));
 
-        UserEntity userEntity = userRepository.findByEmail(accessTokenRequestDto.email()).orElseThrow(
-                () -> new UsernameNotFoundException("User with username: "
+        UserEntity userEntity = userRepository.findByEmail(accessTokenRequestDto.email())
+                .orElseThrow(() -> new UsernameNotFoundException("User with username: "
                         + accessTokenRequestDto.email() + " not found."));
 
         String accessToken = jwtService.generateToken(userEntity);
