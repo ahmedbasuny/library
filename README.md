@@ -42,8 +42,11 @@ The **Library Management System** API is a backend application developed using S
 ### Run the Application
    ```bash
    git clone https://github.com/ahmedbasuny/library/tree/main
-   cd library
    ```
+   ```bash
+      cd library
+      ```
+
    ```bash
    mvn clean install
    ```
